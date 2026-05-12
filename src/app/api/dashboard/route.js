@@ -308,8 +308,8 @@ export async function GET(request) {
     // ─── Finance Extra Data ───
     if (role === ROLES.FINANCE || role === ROLES.ADMIN || role === ROLES.DEAN) {
       dashboardData.financeStats = {
-        pendingBills: await prisma.vendorBill.count({ where: { status: "pending" } }),
-        processingBills: await prisma.vendorBill.count({ where: { status: "processing" } }),
+        pendingBills: await prisma.vendorBill.count({ where: { paymentStatus: "pending" } }),
+        processingBills: await prisma.vendorBill.count({ where: { paymentStatus: "processing" } }),
       };
       
       // Also get recent Unverified vendors for DEAN/ADMIN
