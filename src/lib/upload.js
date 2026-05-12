@@ -11,7 +11,7 @@ import path from "path";
 export const UPLOAD_CONFIG = {
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
   MAX_FILES_PER_UPLOAD: 5,
-  UPLOAD_DIR: path.join(process.cwd(), "public", "uploads"),
+  UPLOAD_DIR: path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "uploads"),
   ALLOWED_MIME_TYPES: [
     "application/pdf",
     "image/jpeg",

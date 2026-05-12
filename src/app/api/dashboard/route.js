@@ -291,7 +291,7 @@ export async function GET(request) {
         dashboardData.pendingBillsCount = await prisma.vendorBill.count({
           where: {
              vendorId: vendor.id,
-             status: { in: ["pending", "processing"] }
+             paymentStatus: { in: ["pending", "processing"] }
           }
         });
         

@@ -34,19 +34,19 @@ async function main() {
       department: "Administration",
     },
     {
-      name: "Dr. Jane Smith",
+      name: "Dr. Hitha D Shetty",
       email: "dean@college.edu",
       role: "dean",
       department: "Academic Affairs",
     },
     {
-      name: "Prof. Robert Johnson",
+      name: "Dr H C Nagaraj",
       email: "principal@college.edu",
       role: "principal",
       department: "Administration",
     },
     {
-      name: "Dr. Alice Brown",
+      name: "Dr. Ramachandra AC",
       email: "faculty1@college.edu",
       role: "faculty_coordinator",
       department: "Computer Science",

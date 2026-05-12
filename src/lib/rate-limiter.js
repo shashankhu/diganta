@@ -1,20 +1,27 @@
 // ─────────────────────────────────────────────
 // In-Memory Rate Limiter
-// Simple sliding window counter without external dependencies (e.g. Redis).
-// Note: State is lost on server restart, and not shared across serverless instances.
+// Sliding window counter — no external dependencies.
+// Note: State is NOT shared across serverless instances.
 // ─────────────────────────────────────────────
 
 const rateLimitStore = new Map();
 
-// Periodic cleanup every minute to prevent memory leaks
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, data] of rateLimitStore.entries()) {
-    if (data.resetTime < now) {
-      rateLimitStore.delete(key);
+// Periodic cleanup — only runs in long-lived processes (not serverless cold starts)
+if (typeof globalThis.__rateLimitCleanup === "undefined") {
+  globalThis.__rateLimitCleanup = setInterval(() => {
+    const now = Date.now();
+    for (const [key, data] of rateLimitStore.entries()) {
+      if (data.resetTime < now) {
+        rateLimitStore.delete(key);
+      }
     }
+  }, 60000);
+
+  // Prevent the interval from keeping Node.js process alive
+  if (globalThis.__rateLimitCleanup?.unref) {
+    globalThis.__rateLimitCleanup.unref();
   }
-}, 60000);
+}
 
 /**
  * Checks if a given key has exceeded the rate limit.
@@ -25,9 +32,6 @@ setInterval(() => {
  * @returns {object} { allowed: boolean, remaining: number, resetTime: number }
  */
 export function checkRateLimit(key, maxAttempts = 10, windowMs = 15 * 60 * 1000) {
-  // DEBUG BYPASS
-  return { allowed: true, remaining: 100, resetTime: Date.now() + 100000 };
-
   const now = Date.now();
   const record = rateLimitStore.get(key);
 

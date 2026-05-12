@@ -1,5 +1,6 @@
 // ─────────────────────────────────────────────
 // Diganta — Singleton Prisma Client
+// Production-safe: single pool, edge-compatible, hot-reload safe
 // ─────────────────────────────────────────────
 
 import { PrismaClient } from "@prisma/client";
@@ -8,33 +9,32 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis;
 
-let prisma;
-
-if (!globalForPrisma.prismaClientV2) {
+if (!globalForPrisma.__digantaPrisma) {
   const connectionString = process.env.DATABASE_URL;
+
+  if (!connectionString) {
+    throw new Error(
+      "FATAL: DATABASE_URL is not set. Check your .env.local or Vercel environment variables."
+    );
+  }
+
   const pool = new Pool({
     connectionString,
-    max: parseInt(process.env.DATABASE_POOL_SIZE || "20", 10),
+    max: parseInt(process.env.DATABASE_POOL_SIZE || "10", 10),
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 10000,
   });
+
   const adapter = new PrismaPg(pool);
 
-  globalForPrisma.prismaClientV2 = new PrismaClient({
+  globalForPrisma.__digantaPrisma = new PrismaClient({
     adapter,
-    log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
+    log:
+      process.env.NODE_ENV === "development"
+        ? ["warn", "error"]
+        : ["error"],
   });
 }
 
-prisma = globalForPrisma.prismaClientV2;
-export default prisma;
-const adapter = new PrismaPg(pool);
-
-globalForPrisma.prisma = new PrismaClient({
-  adapter,
-  log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-});
-}
-
-export const prisma = globalForPrisma.prisma;
+const prisma = globalForPrisma.__digantaPrisma;
 export default prisma;

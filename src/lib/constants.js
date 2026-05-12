@@ -10,6 +10,7 @@ export const ROLES = {
   DEAN: "dean",
   PRINCIPAL: "principal",
   ADMIN: "admin",
+  SUPER_ADMIN: "super_admin",
   TRANSPORT: "transport",
   SECURITY: "security",
   RESOURCE: "resource",

@@ -1,135 +1,191 @@
-# Diganta — College Event Management System
+# DIGANTA — College Event Management System
 
-**Diganta** is a production-grade, scalable college event management system with a comprehensive approval workflow engine, role-based access control, and premium mission control UI.
+> From idea to execution to legacy — the complete college event lifecycle platform.
 
-## ✨ Key Features
+Diganta is a production-grade event management system built for college administration. It features a multi-stage approval pipeline, role-based access control for 12+ roles, vendor management, budget tracking, and real-time notifications.
 
-- **🔄 Complete Event Lifecycle:** Draft → Faculty → Dean → Principal → Admin → Approved
-- **📋 Event Sourcing Approval Engine:** Immutable audit trail with conditional routing
-- **👥 10+ Role-Based Access Control:** Students, Club Heads, Faculty, Dean, Principal, Admin, Departments
-- **💰 Budget-Based Escalation:** Events >₹50K require Principal + Admin approval
-- **🎪 Festival Management:** Standard events work like festivals with Dean-controlled sub-event approval
-- **📊 Real-Time Dashboard:** Role-aware analytics and mission control interface
-- **📱 Premium UI:** Dark mode with accessible design and responsive layout
+---
 
-## 🏗️ Architecture
+## Tech Stack
 
-### Approval Chain
-```
-Club Event → Faculty Coordinator → Dean → Principal* → Admin* → Approved
-                                    (*if budget > ₹50,000)
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16, React 19 |
+| Styling | Vanilla CSS (custom design system) |
+| Database | PostgreSQL via Prisma ORM v7 |
+| Auth | JWT (bcryptjs + jsonwebtoken) |
+| Hosting | Vercel (recommended) |
+| Database Host | Supabase / Neon / any PostgreSQL |
 
-Standard Event (Dean-created) → Auto-approved → Clubs can join
-```
+---
 
-### Role Hierarchy
-- **Students/Club Heads:** Create events, manage assigned clubs
-- **Faculty Coordinators:** Approve club events, coordinate assigned clubs
-- **Dean:** Approve after faculty, create standard events
-- **Principal/Admin:** Final approval for high-budget events
-- **Department Roles:** Notified after approval for execution
-
-## 🛠️ Tech Stack
-
-- **Framework:** Next.js 16.2.1 with App Router and React 19
-- **Database:** PostgreSQL with Prisma ORM and pg adapter
-- **Authentication:** JWT with 7-day tokens and secure session management
-- **UI:** Custom CSS design system with Inter font and Lucide icons
-- **Architecture:** Event-sourcing approval logs, RBAC, and modular API design
-
-## 🚀 Quick Start
+## Quick Start (Local Development)
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL database running locally or remotely
+- PostgreSQL (local or hosted)
 
-### Setup Instructions
+### 1. Clone & Install
+```bash
+git clone https://github.com/shashankhu/diganta.git
+cd diganta
+npm install
+```
 
-1. **Clone and Install**
-   ```bash
-   git clone <repository-url>
-   cd mvptrail
-   npm install
-   ```
+### 2. Configure Environment
+```bash
+cp .env.example .env.local
+```
 
-2. **Environment Configuration**
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your database credentials
-   ```
+Edit `.env.local` with your PostgreSQL credentials:
+```env
+DATABASE_URL="postgresql://postgres:yourpassword@localhost:5432/diganta_mvp"
+JWT_SECRET="your_secure_random_string_at_least_32_characters"
+NODE_ENV="development"
+```
 
-3. **Database Setup**
-   ```bash
-   # One command to setup everything
-   npm run db:setup
-   ```
+### 3. Set Up Database
+```bash
+npm run db:setup
+```
+This will generate the Prisma client, push the schema to your database, and seed demo data.
 
-4. **Start Development**
-   ```bash
-   npm run dev
-   # Open http://localhost:3000
-   ```
+### 4. Run Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000)
 
-### 🔑 Default Login Credentials
-After seeding, use these accounts to explore different roles:
-- **Admin:** admin@college.edu / password123
-- **Dean:** dean@college.edu / password123
-- **Club Head:** student1@college.edu / password123
-- **Student:** student2@college.edu / password123
+---
 
-## 📜 Available Scripts
+## Demo Accounts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run db:setup` | Complete database setup (generate + push + seed) |
-| `npm run db:seed` | Seed with sample data |
-| `npm run db:studio` | Open Prisma Studio GUI |
-| `npm run db:reset` | Reset and reseed database |
+All demo accounts use password: `password123`
 
-## 📂 Project Structure
+| Role | Email | Purpose |
+|------|-------|---------|
+| Super Admin | superadmin@college.edu | Full system access |
+| Admin | admin@college.edu | System administration |
+| Dean | dean@college.edu | Event approval, vendor management |
+| Principal | principal@college.edu | High-budget event approval |
+| Faculty (CS) | faculty1@college.edu | CS club event approval |
+| Faculty (EC) | faculty2@college.edu | EC club event approval |
+| Club Head | student1@college.edu | Create & manage club events |
+| Student | student2@college.edu | View events, join clubs |
+| Transport | transport@college.edu | Transport coordination |
+| Security | security@college.edu | Security coordination |
+| Resource | resource@college.edu | Resource management |
+| Finance | finance@college.edu | Vendor bill processing |
+
+---
+
+## Deployment to Vercel
+
+### 1. Push to GitHub
+```bash
+git add -A
+git commit -m "Production deployment"
+git push origin main
+```
+
+### 2. Import to Vercel
+1. Go to [vercel.com](https://vercel.com) → New Project
+2. Import your GitHub repository
+3. Framework: **Next.js** (auto-detected)
+
+### 3. Configure Environment Variables
+In Vercel → Settings → Environment Variables, add:
+
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | Your production PostgreSQL connection string |
+| `JWT_SECRET` | A secure random string (64+ chars) |
+| `NODE_ENV` | `production` |
+
+> **Supabase Users**: Use the **Session Pooler** URL (port 5432) from your Supabase project settings for IPv4 compatibility with Vercel.
+
+### 4. Deploy
+Vercel will automatically:
+1. Run `npx prisma generate`
+2. Run `next build`
+3. Deploy to production
+
+### 5. Seed Production Database
+After first deployment, seed the database:
+```bash
+# Set DATABASE_URL to your production database
+DATABASE_URL="postgresql://..." npx prisma db push
+DATABASE_URL="postgresql://..." node prisma/seed.js
+```
+
+---
+
+## Project Structure
 
 ```
 src/
-├── app/
-│   ├── (app)/              # Protected pages with auth layout
-│   │   ├── dashboard/      # Role-aware dashboard
-│   │   ├── events/         # Event management and creation
-│   │   ├── clubs/          # Club administration
-│   │   └── notifications/  # Notification center
-│   ├── api/                # REST API endpoints
-│   │   ├── auth/           # Login, signup, me
-│   │   ├── events/         # Event CRUD and approval
+├── app/                    # Next.js App Router
+│   ├── (app)/              # Protected routes (with sidebar)
+│   │   ├── admin/          # Admin panel
+│   │   ├── approvals/      # Approval queue
 │   │   ├── clubs/          # Club management
-│   │   └── users/          # User management
-│   ├── login/              # Authentication pages
-│   └── globals.css         # Premium design system
-├── components/             # Reusable UI components
-├── context/               # React Context providers
-├── lib/                   # Core utilities and configurations
-└── prisma/               # Database schema and seeding
+│   │   ├── dashboard/      # Role-based dashboard
+│   │   ├── events/         # Event CRUD + detail
+│   │   ├── notifications/  # Notification center
+│   │   ├── quotation-requests/ # Vendor quotations
+│   │   ├── vendor-bills/   # Bill processing
+│   │   └── vendors/        # Vendor registry
+│   ├── api/                # API routes
+│   │   ├── auth/           # Login, signup, session
+│   │   ├── events/         # Event CRUD + approval
+│   │   ├── vendors/        # Vendor management
+│   │   └── ...
+│   ├── login/              # Public login page
+│   ├── signup/             # Public signup page
+│   └── vendor-register/    # Public vendor registration
+├── components/             # Shared UI components
+├── context/                # React context providers
+├── lib/                    # Core business logic
+│   ├── api.js              # Response helpers
+│   ├── approval.js         # Approval engine
+│   ├── auth.js             # JWT + password utils
+│   ├── constants.js        # Roles, statuses, config
+│   ├── prisma.js           # Database client
+│   └── ...
+└── middleware.js            # Route protection
 ```
 
-## 🎯 Usage Examples
+---
 
-### Creating an Event (Club Head)
-1. Login as club head → Dashboard → Create Event
-2. Fill proposal details, budget, venue, dates
-3. Submit for approval → Goes to Faculty Coordinator
-4. Track approval status in real-time
+## Approval Workflow
 
-### Approving Events (Faculty/Dean)
-1. Dashboard shows pending approvals for your role
-2. Review event details, budget, requirements
-3. Approve/Reject with comments
-4. System automatically routes to next approver
+```
+DRAFT → WAITING_FOR_FACULTY → WAITING_FOR_DEAN → [WAITING_FOR_PRINCIPAL] → [WAITING_FOR_ADMIN] → APPROVED
+                                                  ↑ Only if budget > ₹50,000 ↑
+```
 
-### Managing Standard Events (Dean)
-1. Create standard events → Auto-approved
-2. All clubs can join standard events
-3. Track participation and resource requests
+- **Club events**: Full pipeline (Faculty → Dean → [Principal] → [Admin])
+- **Sub-events**: Skip Faculty (Dean → [Principal] → [Admin])
+- **Standard events**: Auto-approved (Dean creates directly)
 
-## 📄 License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:push` | Push schema to database |
+| `npm run db:seed` | Seed demo data |
+| `npm run db:setup` | Full setup (generate + push + seed) |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run lint` | Run ESLint |
+
+---
+
+## License
+
+MIT — See [LICENSE](./LICENSE)
