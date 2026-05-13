@@ -20,9 +20,9 @@ if (!globalForPrisma.__digantaPrisma) {
 
   const pool = new Pool({
     connectionString,
-    max: parseInt(process.env.DATABASE_POOL_SIZE || "10", 10),
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
+    max: parseInt(process.env.DATABASE_POOL_SIZE || "3", 10),
+    idleTimeoutMillis: 10000,      // release idle connections after 10s (was 30s)
+    connectionTimeoutMillis: 5000, // fail fast if no connection available (was 10s)
   });
 
   const adapter = new PrismaPg(pool);
