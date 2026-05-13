@@ -37,6 +37,49 @@ export const DEPARTMENT_ROLES = [
   ROLES.FINANCE,
 ];
 
+// ─────────────────────────────────────────────
+// College Departments / Branches
+// Single source of truth for department dropdowns
+// ─────────────────────────────────────────────
+
+export const DEPARTMENTS = [
+  "CSE",
+  "ISE",
+  "ECE",
+  "EEE",
+  "ME",
+  "CE",
+  "AI_ML",
+  "DS",
+  "BT",
+  "CH",
+  "MBA",
+  "MCA",
+  "PHY",
+  "CHEM",
+  "MATH",
+  "OTHER",
+];
+
+export const DEPARTMENT_LABELS = {
+  CSE: "Computer Science & Engineering",
+  ISE: "Information Science & Engineering",
+  ECE: "Electronics & Communication Engineering",
+  EEE: "Electrical & Electronics Engineering",
+  ME: "Mechanical Engineering",
+  CE: "Civil Engineering",
+  AI_ML: "Artificial Intelligence & Machine Learning",
+  DS: "Data Science",
+  BT: "Biotechnology",
+  CH: "Chemical Engineering",
+  MBA: "Master of Business Administration",
+  MCA: "Master of Computer Applications",
+  PHY: "Physics",
+  CHEM: "Chemistry",
+  MATH: "Mathematics",
+  OTHER: "Other",
+};
+
 export const EVENT_STATUS = {
   DRAFT: "DRAFT",
   WAITING_FOR_FACULTY: "WAITING_FOR_FACULTY",

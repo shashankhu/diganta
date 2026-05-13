@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
 import { Users, Plus, Building2, GraduationCap } from "lucide-react";
+import { DEPARTMENTS, DEPARTMENT_LABELS } from "@/lib/constants";
 
 export default function ClubsPage() {
   const { user, apiFetch, loading: authLoading } = useAuth();
@@ -162,13 +163,17 @@ export default function ClubsPage() {
             {form.type === "departmental" && (
               <div className="form-group">
                 <label className="form-label">Department *</label>
-                <input
-                  className="form-input"
+                <select
+                  className="form-select"
                   value={form.department}
                   onChange={(e) => setForm({ ...form, department: e.target.value })}
-                  placeholder="e.g., Computer Science"
                   required
-                />
+                >
+                  <option value="">Select department</option>
+                  {DEPARTMENTS.map((d) => (
+                    <option key={d} value={d}>{DEPARTMENT_LABELS[d]}</option>
+                  ))}
+                </select>
               </div>
             )}
           </div>

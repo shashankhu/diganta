@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
+import { DEPARTMENTS as COLLEGE_DEPARTMENTS, DEPARTMENT_LABELS as DEPT_LABELS } from "@/lib/constants";
 
 const ROLES = [
   { value: "student", label: "Student" },
@@ -123,13 +124,17 @@ export default function SignupPage() {
 
             <div className="form-group">
               <label className="form-label" htmlFor="department">Department</label>
-              <input
+              <select
                 id="department"
-                className="form-input"
-                placeholder="e.g. CSE"
+                className="form-select"
                 value={form.department}
                 onChange={(e) => setForm({ ...form, department: e.target.value })}
-              />
+              >
+                <option value="">Select department</option>
+                {COLLEGE_DEPARTMENTS.map((d) => (
+                  <option key={d} value={d}>{DEPT_LABELS[d]}</option>
+                ))}
+              </select>
             </div>
           </div>
 

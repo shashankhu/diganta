@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { ShieldAlert, Plus, Users as UsersIcon, Search, UserCheck, Shield, KeyRound, AlertTriangle } from "lucide-react";
+import { DEPARTMENTS, DEPARTMENT_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 
 const ALL_ROLES = [
@@ -241,6 +242,16 @@ export default function AdminDashboardPage() {
                       ))}
                     </select>
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Department</label>
+                  <select className="form-input" value={formData.department} onChange={e => setFormData({...formData, department: e.target.value})}>
+                    <option value="">Select department (optional)</option>
+                    {DEPARTMENTS.map(d => (
+                      <option key={d} value={d}>{DEPARTMENT_LABELS[d]}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               
