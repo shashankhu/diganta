@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
 import {
   ArrowLeft, Send, CheckCircle, XCircle, Clock, Users,
-  DollarSign, ListTodo, Plus, MessageSquare, UserPlus, Calendar,
+  IndianRupee, ListTodo, Plus, MessageSquare, UserPlus, Calendar,
 } from "lucide-react";
 import { getStatusBadgeClass, getStatusLabel, formatDate, formatDateTime, formatCurrency } from "@/lib/utils";
 
@@ -380,7 +380,7 @@ export default function EventDetailPage({ params }) {
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-icon info"><DollarSign size={20} /></div>
+              <div className="stat-icon info"><IndianRupee size={20} /></div>
               <div className="stat-content">
                 <h3>{formatCurrency(event.budgetEstimate || 0)}</h3>
                 <p>Total Budget</p>
@@ -693,28 +693,28 @@ export default function EventDetailPage({ params }) {
         <div>
           <div className="stats-grid" style={{ marginBottom: "var(--space-6)" }}>
             <div className="stat-card">
-              <div className="stat-icon info"><DollarSign size={22} /></div>
+              <div className="stat-icon info"><IndianRupee size={22} /></div>
               <div className="stat-content">
                 <h3>{formatCurrency(event.budgetEstimate)}</h3>
                 <p>Estimated</p>
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-icon success"><DollarSign size={22} /></div>
+              <div className="stat-icon success"><IndianRupee size={22} /></div>
               <div className="stat-content">
                 <h3>{formatCurrency(event.budgetAllocated)}</h3>
                 <p>Allocated</p>
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-icon danger"><DollarSign size={22} /></div>
+              <div className="stat-icon danger"><IndianRupee size={22} /></div>
               <div className="stat-content">
                 <h3>{formatCurrency(event.totalExpenses)}</h3>
                 <p>Spent</p>
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-icon warning"><DollarSign size={22} /></div>
+              <div className="stat-icon warning"><IndianRupee size={22} /></div>
               <div className="stat-content">
                 <h3>{formatCurrency(event.budgetRemaining)}</h3>
                 <p>Remaining</p>
